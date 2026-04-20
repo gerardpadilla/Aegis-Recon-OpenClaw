@@ -55,4 +55,4 @@ Provide a concise, action-oriented response.
             return data["choices"][0]["message"]["content"]
     except Exception as e:
         # Provide fallback behavior for when OpenClaw isn't running on MacBook
-        return f"**[Fallback Offline Mode]** AI Gateway offline or unreachable: {e}. \n\n*Suggested Next Steps based on common ports:*\n- SMB (445) detected: Run `enum4linux -a <target>`\n- HTTP (80) detected: Run `nikto -h <target>`\n- SSH (22) detected: Attempt brute-force with `hydra -l root -P dict.txt ssh://<target>`."
+        return "**[Fallback Offline Mode]** The specialized AI Gateway is not connected or the endpoint is mismatched. Operating without AI.\n\n*General Open-Port Advice:*\n- SMB (445): Run `enum4linux -a <target>` to enumerate shares.\n- HTTP (80/443): Run `nikto -h <target>` to find vulnerabilities.\n- SSH (22): Attempt brute-force with `hydra -l root -P dict.txt ssh://<target>`."

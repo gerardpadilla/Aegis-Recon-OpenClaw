@@ -16,9 +16,9 @@ def run_nmap_scan(target="127.0.0.1", ports="1-1000"):
         
     cmd = ["nmap", "-sS", "-sV", "-O", "-p", ports, "-oX", OUTPUT_XML, target]
     try:
-        # Run process safely
-        subprocess.run(cmd, check=True, timeout=120)
-    except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as e:
+        # Run process safely without aggressive timeouts for /24 subnets
+        subprocess.run(cmd, check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
         print(f"Nmap failed or not found: {e}. Generating Mock Data for Demo.")
         _generate_mock_xml(target)
         

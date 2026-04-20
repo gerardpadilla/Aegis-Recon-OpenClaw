@@ -9,7 +9,7 @@ SCAPY_PID = None
 SCAPY_PROCESS = None
 OUTPUT_FILE = "scapy_capture.json"
 
-def capture_packets(output_file, max_packets=100, timeout=30):
+def capture_packets(output_file):
     """
     Function to run in a separate process that sniffs packets.
     """
@@ -42,7 +42,7 @@ def capture_packets(output_file, max_packets=100, timeout=30):
                     json.dump(packets_data, f)
                     
     try:
-        sniff(prn=packet_callback, count=max_packets, timeout=timeout)
+        sniff(prn=packet_callback)
     except Exception as e:
         print(f"Scapy error: {e}")
     finally:
