@@ -6,6 +6,7 @@ load_dotenv()
 
 OPENCLAW_BASE_URL = os.getenv("OPENCLAW_BASE_URL", "http://127.0.0.1:18789/v1")
 OPENCLAW_API_KEY = os.getenv("OPENCLAW_API_KEY", "")
+OPENCLAW_MODEL = os.getenv("OPENCLAW_MODEL", "qwen-3.5")
 
 async def analyze_scan_results(scan_data: dict, packet_data: list):
     """
@@ -38,7 +39,7 @@ Provide a concise, action-oriented response.
 """
 
     payload = {
-        "model": "openclaw-mentor",  # Model name might be arbitrary
+        "model": OPENCLAW_MODEL,
         "messages": [
             {"role": "system", "content": "You are a specialized pentest module. Keep answers short and specific."},
             {"role": "user", "content": prompt}
