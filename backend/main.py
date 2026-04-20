@@ -27,4 +27,4 @@ if __name__ == "__main__":
     import uvicorn
     # Typically running on 0.0.0.0 for external access if needed, but 127.0.0.1 locally is fine.
     # Defaulting to 8000
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
