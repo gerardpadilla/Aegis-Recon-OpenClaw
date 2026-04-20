@@ -1,9 +1,13 @@
+import os
+import sys
+
+# Add the root 'Aegis-Recon' directory to sys.path so 'backend' module is recognized
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from backend.api.routes import router
-import os
-
 app = FastAPI(title="Aegis-Recon Platform v4.0")
 
 # Mount Static Files
