@@ -55,15 +55,35 @@
             <div id="vis-network-container"></div>
         </section>
 
-        <!-- AI Advisor Panel -->
+        <!-- AI Advisor & Actions Panel -->
         <section class="glass-panel panel-ai">
             <h2><span class="icon">🤖</span> Junior Pentest Mentor</h2>
             <div class="ai-content" id="ai-output">
                 <p class="placeholder-text">Awaiting scan results for analysis...</p>
             </div>
+            
+            <div id="action-modules-container" style="display: none; margin-top: 15px;">
+                <h3 style="font-size: 0.95rem; margin-bottom: 10px; color: var(--accent);">Actionable Modules</h3>
+                <div id="action-buttons-grid" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <!-- Buttons injected here dynamically -->
+                </div>
+            </div>
         </section>
 
     </main>
+</div>
+
+<!-- Terminal Modal -->
+<div id="terminal-modal" class="modal-overlay" style="display: none;">
+    <div class="terminal-window">
+        <div class="terminal-header">
+            <span id="terminal-title">Aegis Console // Term-01</span>
+            <button id="close-terminal" class="btn-close">X</button>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+            <p>Initializing reverse shell...</p>
+        </div>
+    </div>
 </div>
 
 <script src="/static/js/topology.js"></script>

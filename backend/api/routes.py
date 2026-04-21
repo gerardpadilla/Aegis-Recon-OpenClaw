@@ -2,12 +2,21 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 
-from backend.core import system, packet_monitor, scanner, ai_advisor
+from backend.core import system, packet_monitor, scanner, ai_advisor, executor
 
 router = APIRouter()
 
 class ScanRequest(BaseModel):
     target: str
+
+class ToolRequest(BaseModel):
+    tool_name: str
+    target: str
+
+@router.post("/tools/execute")
+def execute_tool_route(req: ToolRequest):
+    output = executor.execute_tool(req.tool_name, req.target)
+    return {"status": "success", "output": output}
 
 @router.get("/system/stats")
 def get_stats():

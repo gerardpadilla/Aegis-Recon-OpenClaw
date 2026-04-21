@@ -265,3 +265,89 @@ code {
     color: var(--accent);
     font-family: monospace;
 }
+
+/* Tool Action Buttons */
+.btn-action {
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.btn-action:hover {
+    background: var(--accent);
+    color: #0b0f19;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.btn-action.running {
+    animation: pulse 1s infinite;
+    cursor: wait;
+    opacity: 0.7;
+}
+
+/* Terminal Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.terminal-window {
+    background: #1e1e1e;
+    width: 80%;
+    max-width: 1000px;
+    height: 70vh;
+    border-radius: 8px;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+.terminal-header {
+    background: #2d2d2d;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 1px solid #111;
+}
+
+#terminal-title {
+    color: #ccc;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.btn-close {
+    background: transparent;
+    color: #ff5f56;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.btn-close:hover {
+    color: #ff3b30;
+    transform: scale(1.1);
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #00ff00; /* Hacker Green */
+    white-space: pre-wrap;
+}

@@ -27,10 +27,10 @@ def kill_python_scans():
             if pid == current_pid:
                 continue
                 
-            # Target nmap or scapy processes
-            if name == 'nmap' or (cmdline and any('nmap' in arg for arg in cmdline)):
+            # Target nmap, scapy, or tools
+            if name in ['nmap', 'nikto', 'enum4linux', 'hydra'] or (cmdline and any(arg in ['nmap', 'nikto', 'enum4linux', 'hydra'] for arg in cmdline)):
                 os.kill(pid, signal.SIGKILL)
-                killed_procs.append({"pid": pid, "type": "nmap"})
+                killed_procs.append({"pid": pid, "type": name})
                 
             elif name == 'python' or name == 'python3':
                 # Check if it's running our packet_monitor or other background scans
