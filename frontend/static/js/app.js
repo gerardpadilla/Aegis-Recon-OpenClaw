@@ -90,44 +90,38 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function generateActionButtons(scanData) {
-        actionGrid.innerHTML = ''; // Clear previous
+        let injectedHTML = '<div style="margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;">';
+        injectedHTML += '<h3 style="font-size: 0.95rem; margin-bottom: 10px; color: var(--accent);">Actionable Modules:</h3>';
+        injectedHTML += '<div style="display: flex; flex-wrap: wrap; gap: 10px;">';
         let foundTargets = 0;
 
-        // Ensure we handle potentially broken responses securely
         if (!scanData || !scanData.nodes) return; 
 
-        // We need to map edges to find which host has which port
-        // Host nodes have id e.g., 'host_1'
-        // Port nodes have id e.g., 'port_1_80' and an edge from 'host_1'
-        let hostsMap = {}; // host_id -> ip
+        let hostsMap = {}; 
         scanData.nodes.forEach(n => {
             if (n.group === 'host') hostsMap[n.id] = n.label;
         });
 
         scanData.nodes.forEach(n => {
             if (n.group === 'port') {
-                // Determine which host this belongs to
                 let connectedEdge = scanData.edges.find(e => e.to === n.id);
                 if (connectedEdge && hostsMap[connectedEdge.from]) {
                     const targetIp = hostsMap[connectedEdge.from];
                     
-                    // The label is typically "80\nhttp" or "<b>80</b>\nhttp"
-                    // So we split by newline, drop to first element, and strip everything except numbers
                     const firstLine = n.label.split('\n')[0];
                     const portStr = firstLine.replace(/[^0-9]/g, '');
                     
                     if (portStr) {
-                        // Rule generation
                         if (portStr === '80' || portStr === '443') {
-                            actionGrid.innerHTML += `<button class="btn-action" onclick="runActionTool('nikto', '${targetIp}', this)">Run Nikto (${portStr}) on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('nikto', '${targetIp}', this)">Run Nikto (${portStr}) on ${targetIp}</button>`;
                             foundTargets++;
                         }
                         if (portStr === '445' || portStr === '139') {
-                            actionGrid.innerHTML += `<button class="btn-action" onclick="runActionTool('enum4linux', '${targetIp}', this)">Run Enum4Linux on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('enum4linux', '${targetIp}', this)">Run Enum4Linux on ${targetIp}</button>`;
                             foundTargets++;
                         }
                         if (portStr === '22' || portStr === '3389' || portStr === '21') {
-                            actionGrid.innerHTML += `<button class="btn-action" onclick="runActionTool('hydra', '${targetIp}', this)">Run Hydra on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('hydra', '${targetIp}', this)">Run Hydra on ${targetIp}</button>`;
                             foundTargets++;
                         }
                     }
@@ -135,10 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        injectedHTML += '</div></div>';
+
+        // Force inject directly inside the AI output frame so it's impossible to be hidden by CSS containers
         if (foundTargets > 0) {
-            actionContainer.style.display = 'block';
+            aiOutput.innerHTML += injectedHTML;
         } else {
-            actionContainer.style.display = 'none';
+            aiOutput.innerHTML += `<p style="color: yellow; margin-top: 10px; font-size: 0.8rem;">[Debug: No actionable ports (80,443,445,139,22,21) found in JSON data.]</p>`;
         }
     }
 
