@@ -111,11 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (connectedEdge && hostsMap[connectedEdge.from]) {
                     const targetIp = hostsMap[connectedEdge.from];
                     
-                    // The label contains the port id, e.g. "<b>80</b>\nhttp"
-                    const portMatch = n.label.match(/<b>(\d+)<\/b>/);
-                    if (portMatch) {
-                        const portStr = portMatch[1];
-                        
+                    // The label is typically "80\nhttp" or "<b>80</b>\nhttp"
+                    // So we split by newline, drop to first element, and strip everything except numbers
+                    const firstLine = n.label.split('\n')[0];
+                    const portStr = firstLine.replace(/[^0-9]/g, '');
+                    
+                    if (portStr) {
                         // Rule generation
                         if (portStr === '80' || portStr === '443') {
                             actionGrid.innerHTML += `<button class="btn-action" onclick="runActionTool('nikto', '${targetIp}', this)">Run Nikto (${portStr}) on ${targetIp}</button>`;
