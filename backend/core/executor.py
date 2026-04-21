@@ -3,7 +3,7 @@ import os
 
 ALLOWED_TOOLS = ["nikto", "enum4linux", "hydra"]
 
-def execute_tool(tool_name: str, target: str) -> str:
+def execute_tool(tool_name: str, target: str, port: str = None) -> str:
     """
     Safely executes a whitelisted tool and returns stdout.
     """
@@ -14,14 +14,22 @@ def execute_tool(tool_name: str, target: str) -> str:
     
     if tool_name == "nikto":
         cmd = ["nikto", "-h", target]
+        if port:
+            cmd.extend(["-p", port])
+            
     elif tool_name == "enum4linux":
+        # Enum4linux natively scans 139/445, explicit port flag not standard for -a
         cmd = ["enum4linux", "-a", target]
+        
     elif tool_name == "hydra":
         # Using rockyou as default dictionary
         wordlist = "/usr/share/wordlists/rockyou.txt"
         if not os.path.exists(wordlist):
             return f"Error: Hydra requires {wordlist} which is missing on this OS."
-        cmd = ["hydra", "-l", "root", "-P", wordlist, f"ssh://{target}"]
+        cmd = ["hydra", "-l", "root", "-P", wordlist]
+        if port:
+            cmd.extend(["-s", port])
+        cmd.append(f"ssh://{target}")
         
     try:
         # We run it safely without shell=True to prevent command chaining like '; rm -rf /'

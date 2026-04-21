@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Run Tool Logic
-    window.runActionTool = async function(toolName, target, btnElement) {
+    window.runActionTool = async function(toolName, target, port, btnElement) {
         // UI lock
         btnElement.classList.add('running');
         btnElement.disabled = true;
@@ -62,14 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Open Modal
         terminalModal.style.display = 'flex';
-        terminalTitle.innerText = `Aegis Console // ${toolName} -> ${target}`;
-        terminalOutput.innerHTML = `<p>Executing ${toolName} against ${target}...\n(Please standby, this may take several minutes)...</p>`;
+        let titleSuffix = port ? `${target}:${port}` : target;
+        terminalTitle.innerText = `Aegis Console // ${toolName} -> ${titleSuffix}`;
+        terminalOutput.innerHTML = `<p>Executing ${toolName} against ${titleSuffix}...\n(Please standby, this may take several minutes)...</p>`;
 
         try {
             const res = await fetch('/api/v1/tools/execute', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tool_name: toolName, target: target })
+                body: JSON.stringify({ tool_name: toolName, target: target, port: port })
             });
 
             const data = await res.json();
@@ -113,15 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (portStr) {
                         if (portStr === '80' || portStr === '443') {
-                            injectedHTML += `<button class="btn-action" onclick="runActionTool('nikto', '${targetIp}', this)">Run Nikto (${portStr}) on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('nikto', '${targetIp}', '${portStr}', this)">Run Nikto (${portStr}) on ${targetIp}</button>`;
                             foundTargets++;
                         }
                         if (portStr === '445' || portStr === '139') {
-                            injectedHTML += `<button class="btn-action" onclick="runActionTool('enum4linux', '${targetIp}', this)">Run Enum4Linux on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('enum4linux', '${targetIp}', '${portStr}', this)">Run Enum4Linux on ${targetIp}</button>`;
                             foundTargets++;
                         }
                         if (portStr === '22' || portStr === '3389' || portStr === '21') {
-                            injectedHTML += `<button class="btn-action" onclick="runActionTool('hydra', '${targetIp}', this)">Run Hydra on ${targetIp}</button>`;
+                            injectedHTML += `<button class="btn-action" onclick="runActionTool('hydra', '${targetIp}', '${portStr}', this)">Run Hydra on ${targetIp}</button>`;
                             foundTargets++;
                         }
                     }

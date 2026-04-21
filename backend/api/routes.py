@@ -12,10 +12,11 @@ class ScanRequest(BaseModel):
 class ToolRequest(BaseModel):
     tool_name: str
     target: str
+    port: str = None
 
 @router.post("/tools/execute")
 def execute_tool_route(req: ToolRequest):
-    output = executor.execute_tool(req.tool_name, req.target)
+    output = executor.execute_tool(req.tool_name, req.target, req.port)
     return {"status": "success", "output": output}
 
 @router.get("/system/stats")
