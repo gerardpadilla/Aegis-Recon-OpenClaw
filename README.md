@@ -1,9 +1,9 @@
 # Aegis-Recon Platform v4.0
 
-## 🎯 Objective
+##  Objective
 To deliver a fully functional, air-gapped network reconnaissance and topology mapping tool for a lightweight Kali Linux VM, designed to maintain strict OPSEC parameters while remaining highly intuitive.
 
-## 🛠️ Features Implemented
+##  Features Implemented
 
 ### 1. Actionable Pentest Modules
 When a network scan successfully maps out the ports of discovered hosts, Aegis-Recon dynamically injects execution buttons for natively installed Kali Linux tools underneath your Pentest Mentor.
@@ -21,7 +21,7 @@ When a network scan successfully maps out the ports of discovered hosts, Aegis-R
 - Hardcoded to request responses styled for a red-team operator ("Junior Pentest Mentor").
 - Automatically gracefully degrades into an offline rulesheet via `[Fallback Offline Mode]` if the AI is unreachable.
 
-## 🚀 Deployment Guide (Kali Linux)
+##  Deployment Guide (Kali Linux)
 When updating your script on Kali Linux after pulling from GitHub, ensure that you always perform a hard reset so unstaged local changes do not block your update flow:
 ```bash
 # Pull Latest Code
